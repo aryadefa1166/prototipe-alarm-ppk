@@ -1,29 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useApp } from '../context/AppContext';
-import { Shield, ArrowRight, User, Lock, Eye, EyeOff } from 'lucide-react';
+import { Shield, Users, ShieldAlert, ArrowRight } from 'lucide-react';
 
 export default function Auth() {
   const { login } = useApp();
-  const [isLogin, setIsLogin] = useState(true);
-  const [role, setRole] = useState('civitas'); // civitas atau satgas
-  const [showPassword, setShowPassword] = useState(false);
 
-  const [formData, setFormData] = useState({
-    nim: '',
-    password: '',
-    name: ''
-  });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    login({ ...formData, id: formData.nim || '12345' }, role);
+  // O(1) Action: Langsung tembak data dummy ke state tanpa validasi
+  const handleSimulasiLogin = (role) => {
+    const dummyUser = role === 'civitas' 
+      ? { id: '121400000', name: 'Responden Civitas' }
+      : { id: '198000000', name: 'Petugas Satgas Siaga' };
+    
+    login(dummyUser, role);
   };
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans">
       <div className="max-w-4xl w-full bg-white rounded-[32px] shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[600px]">
         
-        {/* Kiri: Sisi Visual & Branding */}
+        {/* PANEL KIRI: Branding Visual */}
         <div className="md:w-5/12 bg-slate-900 p-10 text-white flex flex-col relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-red-600/20 to-slate-900 z-0"></div>
           
@@ -31,7 +26,7 @@ export default function Auth() {
             <div className="w-12 h-12 bg-red-600 rounded-2xl flex items-center justify-center shadow-lg shadow-red-600/30">
               <Shield size={24} className="text-white" />
             </div>
-            <span className="font-bold tracking-widest text-sm text-slate-300">PROTOTIPE RISET</span>
+            <span className="font-bold tracking-widest text-sm text-slate-300">INSTRUMEN RISET</span>
           </div>
 
           <div className="relative z-10 mt-auto">
@@ -39,7 +34,7 @@ export default function Auth() {
               ALARM <span className="text-red-500">PPKS.</span>
             </h1>
             <p className="text-slate-400 text-sm leading-relaxed mb-8">
-              Sistem Pelaporan Kekerasan Seksual Berbasis Alarm Digital Real-Time untuk Perguruan Tinggi.
+              Sistem Pelaporan Kekerasan Seksual Berbasis Alarm Digital Real-Time.
             </p>
             
             <div className="flex items-center gap-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
@@ -47,100 +42,59 @@ export default function Auth() {
               <span className="w-1 h-1 bg-slate-500 rounded-full"></span>
               <span>Rahasia</span>
               <span className="w-1 h-1 bg-slate-500 rounded-full"></span>
-              <span>Real-Time</span>
+              <span>Satu Klik</span>
             </div>
           </div>
         </div>
 
-        {/* Kanan: Sisi Form */}
+        {/* PANEL KANAN: Tombol Bypass Simulasi */}
         <div className="md:w-7/12 p-10 md:p-14 bg-white flex flex-col justify-center">
-          <div className="mb-10">
-            <h2 className="text-2xl font-bold text-slate-800 mb-2">
-              {isLogin ? 'Selamat Datang' : 'Buat Akun'}
+          <div className="mb-10 text-center">
+            <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 text-slate-400">
+              <Shield size={32} />
+            </div>
+            <h2 className="text-2xl font-black text-slate-800 mb-2">
+              Pilih Peran Simulasi
             </h2>
-            <p className="text-slate-500 text-sm">
-              Silakan masuk ke sistem terintegrasi PPKS.
+            <p className="text-slate-500 text-sm px-4">
+              Silakan pilih sudut pandang yang ingin Anda uji coba pada purwarupa ini.
             </p>
           </div>
 
-          {/* Toggle Role */}
-          <div className="flex p-1 bg-slate-100 rounded-xl mb-8">
+          <div className="space-y-4">
+            {/* Tombol Login Mahasiswa/Civitas */}
             <button 
-              onClick={() => setRole('civitas')}
-              className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition-all ${role === 'civitas' ? 'bg-white shadow text-slate-800' : 'text-slate-400 hover:text-slate-600'}`}
+              onClick={() => handleSimulasiLogin('civitas')}
+              className="w-full bg-white border-2 border-slate-100 hover:border-red-200 hover:bg-red-50 text-slate-700 p-5 rounded-2xl transition-all flex items-center text-left group"
             >
-              Civitas Akademika
+              <div className="w-12 h-12 bg-slate-100 group-hover:bg-red-100 rounded-xl flex items-center justify-center text-slate-500 group-hover:text-red-600 transition-colors mr-4">
+                <Users size={24} />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-slate-800 group-hover:text-red-700 text-lg">Civitas Akademika</h3>
+                <p className="text-xs text-slate-500">Simulasi sebagai pelapor (Korban/Saksi)</p>
+              </div>
+              <ArrowRight size={20} className="text-slate-300 group-hover:text-red-500 group-hover:translate-x-1 transition-all" />
             </button>
+
+            {/* Tombol Login Admin Satgas */}
             <button 
-              onClick={() => setRole('satgas')}
-              className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition-all ${role === 'satgas' ? 'bg-white shadow text-slate-800' : 'text-slate-400 hover:text-slate-600'}`}
+              onClick={() => handleSimulasiLogin('satgas')}
+              className="w-full bg-white border-2 border-slate-100 hover:border-slate-800 hover:bg-slate-900 text-slate-700 hover:text-white p-5 rounded-2xl transition-all flex items-center text-left group shadow-sm hover:shadow-xl"
             >
-              Admin Satgas
+              <div className="w-12 h-12 bg-slate-100 group-hover:bg-slate-800 rounded-xl flex items-center justify-center text-slate-500 group-hover:text-white transition-colors mr-4">
+                <ShieldAlert size={24} />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-slate-800 group-hover:text-white text-lg">Satgas PPKS</h3>
+                <p className="text-xs text-slate-500 group-hover:text-slate-300">Simulasi sebagai pemantau & penerima sinyal</p>
+              </div>
+              <ArrowRight size={20} className="text-slate-300 group-hover:text-white group-hover:translate-x-1 transition-all" />
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {!isLogin && (
-              <div>
-                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Nama Lengkap</label>
-                <div className="relative">
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                  <input 
-                    type="text" required
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                    placeholder="Masukkan nama lengkap"
-                    value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
-                  />
-                </div>
-              </div>
-            )}
-
-            <div>
-              <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">
-                {role === 'satgas' ? 'NIP / ID Petugas' : 'NIM / NIP'}
-              </label>
-              <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                <input 
-                  type="text" required
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                  placeholder={role === 'satgas' ? "Masukkan ID Petugas" : "Masukkan NIM/NIP"}
-                  value={formData.nim} onChange={e => setFormData({...formData, nim: e.target.value})}
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Kata Sandi</label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                <input 
-                  type={showPassword ? "text" : "password"} required
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-12 pr-12 text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                  placeholder="••••••••"
-                  value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})}
-                />
-                <button 
-                  type="button" 
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-            </div>
-
-            <button type="submit" className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 group mt-4 shadow-lg shadow-slate-900/20">
-              {isLogin ? 'Masuk ke Sistem' : 'Daftar Akun'} 
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </button>
-          </form>
-
-          <p className="text-center text-sm text-slate-500 mt-8">
-            {isLogin ? "Belum punya akun? " : "Sudah punya akun? "}
-            <button onClick={() => setIsLogin(!isLogin)} className="font-bold text-red-600 hover:underline">
-              {isLogin ? 'Daftar sekarang' : 'Masuk di sini'}
-            </button>
+          <p className="text-center text-[10px] text-slate-400 mt-12 font-medium uppercase tracking-widest">
+            Hanya Untuk Keperluan Riset PKM
           </p>
         </div>
       </div>
