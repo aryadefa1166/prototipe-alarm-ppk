@@ -94,7 +94,7 @@ export default function Auth() {
           </div>
 
           <p className="text-center text-[10px] text-slate-400 mt-12 font-medium uppercase tracking-widest">
-            Hanya Untuk Keperluan Riset PKM
+            Hanya Untuk Keperluan Penelitian PKM
           </p>
         </div>
       </div>
