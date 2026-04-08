@@ -20,11 +20,11 @@ export const AppProvider = ({ children }) => {
   // --- DATA DUMMY ---
   const [forumPosts, setForumPosts] = useState([
     { id: 1, user: 'Mahasiswa Hukum', text: 'Lampu jalan di Pintu 4 mati total. Harap hati-hati.', time: '2m lalu', likes: [], comments: [] },
-    { id: 2, user: 'Anak Fasilkom', text: 'Patroli Satgas malam ini terlihat di sekitar Pendopo. Aman.', time: '1j lalu', likes: ['dummy-id'], comments: [] },
+    { id: 2, user: 'Anak Fasilkom', text: 'Patroli Satgas PPK malam ini terlihat di sekitar Pendopo. Aman.', time: '1j lalu', likes: ['dummy-id'], comments: [] },
   ]);
 
   const [chatHistory, setChatHistory] = useState([
-    { sender: 'bot', text: 'Halo! Saya SVARNA Bot. Ada yang bisa saya bantu? (Lapor, Hukum, Konseling)' }
+    { sender: 'bot', text: 'Halo! Saya Bot Siaga PPK. Ada yang bisa saya bantu terkait informasi, perlindungan, atau konseling?' }
   ]);
 
   // --- 1. AUTHENTICATION LOGIC ---
@@ -128,11 +128,11 @@ export const AppProvider = ({ children }) => {
     setChatHistory(prev => [...prev, userMsg]);
 
     setTimeout(() => {
-      let reply = "Maaf, saya kurang paham. Silakan hubungi CS Satgas.";
+      let reply = "Maaf, saya kurang paham. Silakan hubungi CS Satgas PPK.";
       const lower = text.toLowerCase();
       const knowledge = [
         { keys: ['halo', 'hai', 'pagi'], ans: "Halo! Tetap waspada. Ada yang bisa saya bantu?" },
-        { keys: ['lapor', 'aduan', 'korban'], ans: "Untuk kondisi darurat, tekan tombol SOS. Untuk laporan tertulis, gunakan fitur 'Lapor' di Portal USU." },
+        { keys: ['lapor', 'aduan', 'korban'], ans: "Untuk kondisi darurat, gunakan fitur 'Respons Langsung' (SOS). Untuk laporan tertulis, hubungi Saluran Siaga." },
         { keys: ['hukum', 'uu', 'pasal'], ans: "Dasar hukum: Permendikbudristek No. 30 Tahun 2021 & UU TPKS. Korban berhak atas perlindungan." },
         { keys: ['takut', 'trauma', 'konseling'], ans: "Layanan Psikolog tersedia gratis di Fakultas Psikologi. Kami siap mendengar." },
         { keys: ['makasih'], ans: "Sama-sama. Jaga diri ya!" }
@@ -175,7 +175,7 @@ export const AppProvider = ({ children }) => {
       if (post.id === postId) {
         return {
           ...post,
-          comments: [...post.comments, { user: user.name, text }] // Pakai nama User asli
+          comments: [...post.comments, { user: user.name, text }]
         };
       }
       return post;
